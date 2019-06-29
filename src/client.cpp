@@ -3,28 +3,35 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <unistd.h>
+
+
 
 using namespace std;
 
 int main (int argc, char* argv[]) {
 
+  std::cout << "Client start" << std::endl;
+
   string host = "localhost";
   int port = 1886;
 
-  try {
     ClientSocket client_socket ( host, port );
     string reply;
 
-    try {
+ while (1){
       client_socket << "subscribe:LivingRoom";
       client_socket >> reply;
-    } catch ( SocketException& ) {}
+	  std::cout << "Client:" << reply <<std::endl;
+      client_socket << "publish:LivingRoom:HelloMsg";
+      client_socket >> reply;
+	  std::cout << "Client:" << reply <<std::endl;
 
-    cout << "We received this response from the server:\n\"" << reply << "\"\n";;
+	  unsigned int microseconds = 5 * 1000 *1000;
+	  usleep(microseconds);
+ }
 
-  }  catch ( SocketException& e ) {
-    cout << "Exception was caught:" << e.description() << endl;
-  }
 
+  std::cout << "Client end" << std::endl;
   return 0;
 }
