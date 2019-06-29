@@ -11,27 +11,25 @@ using namespace std;
 
 int main (int argc, char* argv[]) {
 
-  std::cout << "Client start" << std::endl;
+	std::cout << "Client start" << std::endl;
+	std::cout << "supported cmds:\n"<< "subscribe:LivingRoom\npublish:LivingRoom:HelloMsg\n"<<std::endl;
 
-  string host = "localhost";
-  int port = 1886;
+	string host = "localhost";
+	int port = 1886;
+	try{
+		ClientSocket client_socket ( host, port );
+		string reply;
 
-    ClientSocket client_socket ( host, port );
-    string reply;
+		while (1){
+			client_socket << argv[1];
+			client_socket >> reply;
+			std::cout << "Client got msg: " << reply <<std::endl;
+		}
 
- while (1){
-      client_socket << "subscribe:LivingRoom";
-      client_socket >> reply;
-	  std::cout << "Client:" << reply <<std::endl;
-      client_socket << "publish:LivingRoom:HelloMsg";
-      client_socket >> reply;
-	  std::cout << "Client:" << reply <<std::endl;
+	} catch (...){
+		std::cout<<"!EXCEPTION: can not connect!"<<endl;
+	}
 
-	  unsigned int microseconds = 5 * 1000 *1000;
-	  usleep(microseconds);
- }
-
-
-  std::cout << "Client end" << std::endl;
-  return 0;
+	std::cout << "Client end" << std::endl;
+	return 0;
 }
