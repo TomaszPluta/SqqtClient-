@@ -1,0 +1,1 @@
+./Debug/client.cpp.o ./Debug/ClientSocket.cpp.o ./Debug/socket.cpp.o

@@ -11,13 +11,15 @@
 #include <unistd.h>
 #include <string>
 #include <arpa/inet.h>
-
+#include <vector>
 
 const int MAXHOSTNAME = 200;
 const int MAXCONNECTIONS = 5;
 const int MAXRECV = 500;
+const int MAXSEND = 500;
 
-class Socket {
+class Socket
+{
  public:
   Socket();
   virtual ~Socket();
@@ -33,15 +35,21 @@ class Socket {
 
   // Data Transimission
   bool send ( const std::string ) const;
+  bool send ( const std::vector<char> vec ) const;
   int recv ( std::string& ) const;
-
+  int recv (std::vector<char>  & v ) const;
 
   void set_non_blocking ( const bool );
 
   bool is_valid() const { return m_sock != -1; }
+  std::string get_addr();
+
+ private:
 
   int m_sock;
   sockaddr_in m_addr;
+
+
 };
 
 
